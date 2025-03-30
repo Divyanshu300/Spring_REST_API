@@ -8,9 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import com.spring.learn.REST_API.configurrations.AppConfig;
 import com.spring.learn.REST_API.dto.EmployeeDTO;
-import com.spring.learn.REST_API.repositories.EmployeeRepository;
 import com.spring.learn.REST_API.services.EmployeeService;
 
 @RestController
