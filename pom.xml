@@ -67,6 +67,40 @@
 			<artifactId>modelmapper</artifactId>
 			<version>3.0.0</version> 
 		</dependency>
+
+		<!-- OpenTelemetry Core API -->
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-api</artifactId>
+			<version>1.30.0</version>
+		</dependency>
+
+		<!-- OpenTelemetry SDK (Handles logs, traces, metrics) -->
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-sdk</artifactId>
+			<version>1.30.0</version>
+		</dependency>
+
+		<!-- OpenTelemetry Logging SDK -->
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-sdk-logs</artifactId>
+			<version>1.30.0</version>
+		</dependency>
+
+		<!-- OpenTelemetry OTLP Exporter (Sends logs to OpenTelemetry Collector) -->
+		<!-- <dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-exporter-otlp-logs</artifactId>
+			<version>1.30.0</version>
+		</dependency> -->
+		<dependency>
+			<groupId>io.opentelemetry</groupId>
+			<artifactId>opentelemetry-exporter-otlp</artifactId>
+			<version>1.30.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

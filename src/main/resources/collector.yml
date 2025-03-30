@@ -1,0 +1,36 @@
+extensions:
+  basicauth/client:
+    client_auth:
+      username: admin
+      password: Open@telemetry@01
+  health_check: {}
+
+receivers:
+  otlp:
+    protocols:
+      grpc:
+        endpoint: 0.0.0.0:4317
+      http:
+        cors:
+          allowed_origins:
+            - http://*
+            - https://*
+        endpoint: 0.0.0.0:4318
+
+exporters:
+  opensearch:
+    logs_index: "otel-logs"
+    http:
+      endpoint: http://opensearch:9200
+      tls:
+        insecure: true
+  debug: {}
+
+service:
+  extensions:
+    - basicauth/client
+    - health_check
+  pipelines:
+    logs:
+      receivers: [otlp]
+      exporters: [opensearch, debug]

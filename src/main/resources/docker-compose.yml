@@ -1,0 +1,61 @@
+services:
+  opensearch:
+    container_name: opensearch
+    image: docker.io/opensearchproject/opensearch:latest
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "OPENSEARCH_JAVA_OPTS=-Xms512m -Xmx512m"
+      - "OPENSEARCH_INITIAL_ADMIN_PASSWORD=Open@telemetry@01"
+      - "DISABLE_SECURITY_PLUGIN=true"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    ports:
+      - 9200:9200
+      - 9600:9600
+    networks:
+      - opensearch-net
+    healthcheck:
+      test: ["CMD-SHELL", "curl -s http://localhost:9200/_cat/health >/dev/null || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  opensearch-dashboards:
+    container_name: opensearch-dashboards
+    image: docker.io/opensearchproject/opensearch-dashboards:latest
+    environment:
+      - "DISABLE_SECURITY_DASHBOARDS_PLUGIN=true"
+      - "OPENSEARCH_HOSTS=[\"http://opensearch:9200\"]"
+    depends_on:
+      opensearch:
+        condition: service_healthy
+    ports:
+      - 5601:5601
+    networks:
+      - opensearch-net
+
+  opentelemetry-collector:
+    image: otel/opentelemetry-collector-contrib:latest
+    container_name: opentelemetry-collector
+    volumes:
+      - ./collector.yaml:/etc/otel-collector-config.yaml
+    command: ["--config", "/etc/otel-collector-config.yaml"]
+    ports:
+      - "4317:4317"
+      - "4318:4318"
+    restart: always
+    depends_on:
+      opensearch:
+        condition: service_healthy
+    networks:
+      - opensearch-net
+
+networks:
+  opensearch-net:
+    driver: bridge
